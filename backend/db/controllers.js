@@ -12,7 +12,15 @@ const getSearchedMovies = (term) => {
 };
 
 const postMovie = (movie) => {
-  knex("movies").insert(movie);
+  return knex("movies")
+    .insert(movie)
+    .then((data) => knex.select("*").from("movies"));
 };
 
-module.exports = { getAllMovies, getSearchedMovies, postMovie };
+const deleteMovie = (id) => {
+  return knex("movies")
+    .where('id', '=', id)
+    .del()
+    .then((data) => knex.select("*").from("movies"));
+};
+module.exports = { getAllMovies, getSearchedMovies, postMovie, deleteMovie };
